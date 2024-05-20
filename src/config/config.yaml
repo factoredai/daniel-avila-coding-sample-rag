@@ -1,0 +1,58 @@
+defaults:
+  - _self_
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+
+verbose: True
+debug_mode: False
+
+dataset:
+  dataset_name: •••
+  file: •••
+  data_cache_dir: ./data/datasets/${dataset.file}
+
+query_engine:
+  engine_type: hierarchical
+  embedding_model: •••
+  similarity_top_k: 3
+  chunk_size: 128
+  chunk_overlap: 8
+  hybrid: False
+  reranker: True
+  reorder: False
+  verbose: ${verbose}
+
+storage_context:
+  collection_name: test-index
+  qdrant_url: http://localhost:6333
+  data_dir: •••
+  hybrid: ${query_engine.hybrid}
+
+llm:
+  llm_path: data/models/llama-2-7b-chat.Q4_K_M.gguf
+  embedding_model: ${query_engine.embedding_model}
+  max_tokens: 500
+  n_gpu_layers: -1
+  n_batch: 1024
+  debug_mode: ${debug_mode}
+
+general:
+  experiment_name: general-rag-experiments
+  test_size_per_doc: 20
+  regenerate_testset: True
+  testset_path: data/testsets/testset-${dataset.file}.pkl
+  run_name: engine:${query_engine.engine_type}-top:${query_engine.similarity_top_k}-reranker:${query_engine.reranker}-hybrid:${query_engine.hybrid}-test:${general.test_size_per_doc}
+
+haystack:
+  experiment_name: haystack-rag-experiments
+  tested_llm_name: gpt-4
+  test_description: sentence_window_test
+  rag_haystack: True
+  version: 1
+  haystack_results_dir: data/results/haystack_results
+  verbose: ${verbose}
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .

@@ -1,0 +1,14 @@
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+     - 6333:6333
+    volumes:
+      - ./data/qdrant/storage:/qdrant/storage
+      - ./data/qdrant/config/production.yaml:/qdrant/config/production.yaml
+    networks:
+      - qdrant-net
+
+networks:
+  qdrant-net:
+      name: qdrant-net
