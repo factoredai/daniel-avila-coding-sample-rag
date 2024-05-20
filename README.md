@@ -23,6 +23,15 @@ Most of the configuration is contained in a `.yaml` file which follows Hydra for
 
 For confidentiality, some fields of the configuration file have been erased and replaced with "•••".
 
+## Directories Structure
+
+Below is a list of the main directories and scripts that constitute this repository:
+
+ - `haystack_test.py` and `rag_test.py`: As mentioned above, these scripts contain the main code to run the different sets of tests.
+ - `src/testers`: Has the implementation of the different tester classes, one for each set of tests. Both testers inherited from an abstract class that states a `run_test`, which is responsible for returning the test results.
+ - `src/query_engines`: Uses a Factory Pattern to create the different configurations of query engines, which are mentioned above.
+ - `src/utils`: Implements two functions to load the documents into a LLamaIndex Document object. As mentioned above, it accepts either HuggingFace-compatible datasets or PDFs.
+
 ## Environment
 
 Poetry is used to manage the dependencies in this project.
